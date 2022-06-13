@@ -11,6 +11,8 @@ function Bar2:init()
 
     progressBar = ProgressBar(100,25,145,145)
     progressBar:add()
+
+    gfx.drawText("Test",20,20)    -- ideally it would lay on tope of the white or black progress bar. and be kDrawModeCopy so it turns white when the bar overlaps
 end
 
 function Bar2:decreaseBar(newwidth)

@@ -11,11 +11,16 @@ function Bar2:init()
 
     progressBar = ProgressBar(100,25,145,145)
     progressBar:add()
-
-    gfx.drawText("Test",20,20)    -- ideally it would lay on tope of the white or black progress bar. and be kDrawModeCopy so it turns white when the bar overlaps
 end
 
 function Bar2:decreaseBar(newwidth)
     progressBar:setClipRect(progressBar.x-progressBar.width/2,progressBar.y-progressBar.height/2,newwidth,progressBar.height)
+end
+
+function Bar2:update()
+    -- I'm not sure how to use lockFocus in this case
+    -- I'm not really using an image so it doesn't really make sense.
+    -- PushContext at least makes some sense, but it still isn't working right
+    gfx.drawText("Text",80,20)
 end
 

@@ -24,6 +24,9 @@ end
 function HudUi:init()
 	bar1 = Bar1()
 	bar2 = Bar2()
+
+	bar1:add()
+	bar2:add()
 end
 
 function HudUi:update()

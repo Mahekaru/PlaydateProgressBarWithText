@@ -3,16 +3,16 @@ import "coreLibs/graphics"
 import "coreLibs/sprites"
 import "coreLibs/timer"
 
-import "HudUi"
+import "ProgressBar"
 
 local pd <const> = playdate
 local gfx <const> = pd.graphics
 
-local hudUi = nil
+local progressBar = nil
 
 local function initalize()
-	hudUi = HudUi(false)
-	hudUi:add()
+	progressBar = ProgressBar(100,25,145,145)
+	progressBar:add()
 end
 
 initalize()
@@ -22,15 +22,16 @@ local progress2 = 141
 function playdate.update()
 	gfx.sprite.update()
 	pd.timer.updateTimers()
+	progressBar:drawText()
 
 	if pd.buttonIsPressed(pd.kButtonA) then
 		progress1 +=1
-		hudUi:increaseBar(progress1)
+		progressBar:increaseBar(progress1)
 	end
 
 	if pd.buttonIsPressed(pd.kButtonB) then
-		progress2 -=1
-		hudUi:decreaseBar(progress2)
+		progress1 -=1
+		progressBar:decreaseBar(progress1)
 	end
 end
 

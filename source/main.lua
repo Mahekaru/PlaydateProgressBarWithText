@@ -1,37 +1,38 @@
 import "coreLibs/object"
 import "coreLibs/graphics"
 import "coreLibs/sprites"
-import "coreLibs/timer"
 
 import "ProgressBar"
 
 local pd <const> = playdate
 local gfx <const> = pd.graphics
 
-local progressBar = nil
+local progressBar1 = nil
+local progressBar2 = nil
 
 local function initalize()
-	progressBar = ProgressBar(100,25,145,145)
-	progressBar:add()
+	progressBar1 = ProgressBar(100,25,145,25)
+	progressBar1:add()
+
+	progressBar2 = ProgressBar(100,51,145,25)
+	progressBar2:set(100)
+	progressBar2:add()
 end
 
 initalize()
-
 local progress1 = 0
-local progress2 = 141
+local progress2 = 100
 function playdate.update()
 	gfx.sprite.update()
-	pd.timer.updateTimers()
-	progressBar:drawText()
 
 	if pd.buttonIsPressed(pd.kButtonA) then
 		progress1 +=1
-		progressBar:increaseBar(progress1)
+		progressBar1:set(progress1)
 	end
 
 	if pd.buttonIsPressed(pd.kButtonB) then
-		progress1 -=1
-		progressBar:decreaseBar(progress1)
+		progress2 -=1
+		progressBar2:set(progress2)
 	end
 end
 

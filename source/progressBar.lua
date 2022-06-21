@@ -1,61 +1,27 @@
-import "CoreLibs/math"
 local pd <const> = playdate
 local gfx <const> = pd.graphics
-local Sprite = gfx.sprite
-local progressBarText = ""
-local white = false
-local black = false
 
-class('ProgressBar').extends(Sprite)
+class('ProgressBar').extends(gfx.sprite)
 
-function ProgressBar:init(x,y,width)
-    local progressBarBorderImage = gfx.image.new("images/progressBarBorder")
-    local progressBarImage = gfx.image.new("images/progressBar")
-
-    local progressBarBorder = gfx.sprite.new()
-    progressBarBorder:setImage(progressBarBorderImage)
-    progressBarBorder.width = width
- 
-    progressBarBorder:moveTo(x,y)
-    progressBarBorder:add()
-
-    textSprite = gfx.sprite.new( textOverlay )
-    textSprite:moveTo( 200, 200 )
-    textSprite:add()
-    
-    self:setImage(progressBarImage)
-    self.width = width - 4
-    self:moveTo(x,y)
-    self:add()
-
-    self:increaseBar(0)
+function ProgressBar:init(x, y, width, height)
+	self:setImage(gfx.image.new(width, height))
+	self.progress = 0
+	self:moveTo(x, y)
+	self:add()
+	self:set(0)
 end
 
-function ProgressBar:increaseBar(newwidth)
-    progressBarText = newwidth
-    self:setClipRect(self.x-self.width/2,self.y-self.height/2,newwidth,self.height)
-end
-
-function ProgressBar:decreaseBar(newwidth)
-    progressBarText = newwidth
-    self:setClipRect(self.x-self.width/2,self.y-self.height/2,newwidth,self.height)
-end
-
-function ProgressBar:drawText()
-    local percentage = math.floor((progressBarText / self.width) * 100)
-
-    if percentage >= 50 and white == false then
-        playdate.graphics.setImageDrawMode("fillWhite")
-        white = true
-        black = false
-    end
-
-    if percentage < 50 and black == false then
-        playdate.graphics.setImageDrawMode("fillBlack")
-        white = false
-        black = true
-    end
-
-    gfx.drawText(percentage.."%", 100,17)
-
+function ProgressBar:set(percentage)
+	self.progress = percentage
+	local bar_image = gfx.image.new(self.width, self.height, gfx.kColorWhite)
+	local progressWidth = self.progress/100 * (self.width - 4)
+    local _, fontHeight = playdate.graphics.getTextSize("TEST")
+	gfx.pushContext(bar_image)
+	gfx.setLineWidth(2)
+	gfx.drawRoundRect(1, 1, self.width-2, self.height-2, 3)
+	gfx.fillRect(2, 2, progressWidth, self.height - 4)
+	gfx.setImageDrawMode(gfx.kDrawModeNXOR)
+	gfx.drawTextAligned(math.floor(self.progress) .. "%", self.width/2, (self.height - fontHeight)/2 + 2, kTextAlignment.center)
+	gfx.popContext()
+	self:setImage(bar_image)
 end
